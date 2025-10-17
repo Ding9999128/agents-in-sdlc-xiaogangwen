@@ -6,6 +6,13 @@ from models import Game, Publisher, Category, db
 from routes.games import games_bp
 
 class TestGamesRoutes(unittest.TestCase):
+    """
+    Test suite for games API routes.
+    
+    This test class contains unit tests for the games endpoints including
+    retrieval of all games and individual games by ID. Tests use an in-memory
+    SQLite database with test data to verify API functionality.
+    """
     # Test data as complete objects
     TEST_DATA: Dict[str, Any] = {
         "publishers": [
