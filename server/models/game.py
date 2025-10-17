@@ -3,6 +3,12 @@ from .base import BaseModel
 from sqlalchemy.orm import validates, relationship
 
 class Game(BaseModel):
+    """
+    Game model representing a game in the crowdfunding platform.
+    
+    This model stores information about games including title, description,
+    star rating, and relationships to publishers and categories.
+    """
     __tablename__ = 'games'
     
     id = db.Column(db.Integer, primary_key=True)
@@ -20,18 +26,57 @@ class Game(BaseModel):
     
     @validates('title')
     def validate_name(self, key, name):
+        """
+        Validate the game title field.
+        
+        Args:
+            key (str): The field name being validated
+            name (str): The title value to validate
+            
+        Returns:
+            str: The validated title
+            
+        Raises:
+            ValueError: If the title doesn't meet validation requirements
+        """
         return self.validate_string_length('Game title', name, min_length=2)
     
     @validates('description')
     def validate_description(self, key, description):
+        """
+        Validate the game description field.
+        
+        Args:
+            key (str): The field name being validated
+            description (str or None): The description value to validate
+            
+        Returns:
+            str or None: The validated description
+            
+        Raises:
+            ValueError: If the description doesn't meet validation requirements
+        """
         if description is not None:
             return self.validate_string_length('Description', description, min_length=10, allow_none=True)
         return description
     
     def __repr__(self):
+        """
+        Return a string representation of the Game instance.
+        
+        Returns:
+            str: A formatted string showing the game title and ID
+        """
         return f'<Game {self.title}, ID: {self.id}>'
 
     def to_dict(self):
+        """
+        Convert the Game instance to a dictionary representation.
+        
+        Returns:
+            dict: A dictionary containing the game's data with publisher
+                  and category information included
+        """
         return {
             'id': self.id,
             'title': self.title,
